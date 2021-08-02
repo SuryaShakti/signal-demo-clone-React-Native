@@ -16,7 +16,7 @@ const CustomListItem = () => {
                 <ListItem.Title style={{fontWeight: 'bold'}}>
                     {'Youtube Channel'}
                 </ListItem.Title>
-                <ListItem.Subtitle style={{width: '100px'}} nummberOfLines={1} ellipsizeMode="tail" >
+                <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail" >
                     {'It is my foirst demo  channel in this signal clone app '}
                 </ListItem.Subtitle>
             </ListItem.Content>
