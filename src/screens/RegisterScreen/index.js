@@ -4,6 +4,7 @@ import { View, Text, KeyboardAvoidingView } from 'react-native';
 // import { Input } from 'react-native-elements/dist/input/Input';
 import styles from './styles';
 import { Button, Input, Image } from 'react-native-elements';
+import { useLayoutEffect } from 'react';
 
 
 const RegisterScreen = ({ navigation }) => {
@@ -12,6 +13,12 @@ const RegisterScreen = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [imageUrl, setImageUrl] = useState('');
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerBackTitle: 'Back to Login'
+        })
+    }, [navigation])
 
     const register = () => {
 
