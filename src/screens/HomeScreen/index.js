@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { SafeAreaView } from 'react-native'
 import { TouchableOpacity } from 'react-native'
@@ -10,6 +10,19 @@ import styles from './styles'
 import { AntDesign, SimpleLineIcons } from '@expo/vector-icons';
 
 const HomeScreen = ({ navigation }) => {
+
+    const [chats, setChats] = useState([]);
+
+    useEffect(() => {
+        const unsubscribe = db.collection('chats').onSnapshot((snapshot) => {
+            setChats(snapshot.docs.map((doc => ({
+                id: doc.id,
+                data: doc.data()
+            }))));
+        })
+
+        return unsubscribe
+    }, [])
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -50,10 +63,18 @@ const HomeScreen = ({ navigation }) => {
         })
     }
 
+    const enterChat = (id, chatName) => {
+        navigation.navigate('Chat', { id, chatName })
+    }
+
     return (
         <SafeAreaView>
-            <ScrollView>
-                <CustomListItem />
+            <ScrollView style={styles.container}>
+                {
+                    chats.map((chat) => (
+                        <CustomListItem enterChat={enterChat} id={chat.id} key={chat.id} chatName={chat.data.chatName} />
+                    ))
+                }
             </ScrollView>
         </SafeAreaView>
     )

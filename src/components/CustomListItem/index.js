@@ -3,9 +3,10 @@ import { View, Text } from 'react-native'
 import styles from './styles';
 import { ListItem, Avatar } from 'react-native-elements';
 
-const CustomListItem = () => {
+const CustomListItem = ({ id, chatName, enterChat }) => {
+
     return (
-        <ListItem>
+        <ListItem onPress={() => enterChat(id, chatName)} bottomDivider key={id}>
             <Avatar
                 rounded
                 source={{
@@ -13,8 +14,8 @@ const CustomListItem = () => {
                 }}
             />
             <ListItem.Content>
-                <ListItem.Title style={{fontWeight: 'bold'}}>
-                    {'Youtube Channel'}
+                <ListItem.Title style={{ fontWeight: 'bold' }}>
+                    {chatName}
                 </ListItem.Title>
                 <ListItem.Subtitle numberOfLines={1} ellipsizeMode="tail" >
                     {'It is my foirst demo  channel in this signal clone app '}
