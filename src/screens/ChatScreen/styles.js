@@ -28,6 +28,34 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         maxWidth: '80%',
         position: 'relative',
+    },
+    sender:{
+        padding: 15,
+        backgroundColor: '#2b68e6',
+        alignSelf: 'flex-start',
+        borderRadius: 20,
+        margin: 15,
+        marginBottom: 20,
+        maxWidth: '80%',
+        position: 'relative',
+    },
+    senderText:{
+        color: '#fff',
+        fontWeight: '500',
+        // marginLeft: 10,
+        marginBottom: 4,
+    },
+    senderName:{
+        left: 10,
+        top: 10,
+        paddingRight: 10,
+        fontSize: 10,
+        color: 'white',
+    }, 
+    recieverText:{
+        color: '#000',
+        fontWeight: '500',
+        // marginLeft: 10, 
     }
 })
 

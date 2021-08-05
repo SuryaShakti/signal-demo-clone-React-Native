@@ -12,7 +12,7 @@ import { TextInput } from 'react-native';
 import { Keyboard } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native';
 import { Platform } from 'react-native';
-import * as firebase from 'firebase';
+import firebase from 'firebase/app';
 import { auth, db } from '../../../firebase';
 
 
@@ -60,7 +60,7 @@ const ChatScreen = ({ navigation, route }) => {
     }
 
     useLayoutEffect(() => {
-        const unsubscribe = db.collection('chats').doc(route.params.id).collection('messages').orderBy('timestamp', 'desc').onSnapshot((snapshot) => {
+        const unsubscribe = db.collection('chats').doc(route.params.id).collection('messages').orderBy('timestamp', 'asc').onSnapshot((snapshot) => {
             setMessages(
                 snapshot.docs.map((doc) => ({
                     id: doc.id,
@@ -80,23 +80,49 @@ const ChatScreen = ({ navigation, route }) => {
             <KeyboardAvoidingView
                 style={styles.container}
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                keyboardVerticalOffset={90}
+                keyboardVerticalOffset={120}
             >
                 <TouchableWithoutFeedback onPrss={Keyboard.dismiss}>
                     <>
-                        <ScrollView>
-                            {/* Chats will be displayed here */}
+                        <ScrollView style={{ paddingTop: 7, paddingBottom: 7 }}>
                             {
                                 messages.map(({ id, data }) => (
                                     data.email === auth.currentUser.email ? (
                                         <View key={id} style={styles.reciever}>
-                                            <Avatar />
+                                            <Avatar
+                                                rounded
+                                                size={30}
+                                                position={'absolute'}
+                                                bottom={-15}
+                                                right={-5}
+                                                //WEB
+                                                containerStyle={{
+                                                    position: 'absolute',
+                                                    bottom: -15,
+                                                    right: -5
+                                                }}
+                                                source={{ uri: data.photoURL }}
+                                            />
                                             <Text style={styles.recieverText}>{data.message}</Text>
                                         </View>
                                     ) : (
                                         <View key={id} style={styles.sender}>
-                                            <Avatar />
+                                            <Avatar
+                                                rounded
+                                                size={30}
+                                                position={'absolute'}
+                                                bottom={-15}
+                                                left={-5}
+                                                //WEB
+                                                containerStyle={{
+                                                    position: 'absolute',
+                                                    bottom: -15,
+                                                    left: -5
+                                                }}
+                                                source={{ uri: data.photoURL }}
+                                            />
                                             <Text style={styles.senderText}>{data.message}</Text>
+                                            <Text style={styles.senderName}>{data.displayName}</Text>
                                         </View>
                                     )
                                 ))

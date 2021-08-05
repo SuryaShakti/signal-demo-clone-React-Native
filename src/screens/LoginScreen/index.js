@@ -5,25 +5,37 @@ import { Button, Input, Image } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
 import { KeyboardAvoidingView } from 'react-native';
 import { auth } from '../../../firebase';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const LoginScreen = ({ navigation }) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((authUser) => {
-            if(authUser){
+            if (authUser) {
                 navigation.replace("Home")
             }
         })
-
         return unsubscribe;
-    },[])
+    }, [])
 
     const signIn = () => {
-        auth.signInWithEmailAndPassword(email, password)
-        .catch(err => alert(err.message))
+        if (email.trim() === '') {
+            setEmailError(true);
+            return;
+        } else if (password.trim() === '') {
+            setPasswordError(true);
+            return;
+        } else {
+            setLoading(true)
+            auth.signInWithEmailAndPassword(email, password)
+                .catch(err => alert(err.message)).finally(() => setLoading(false));
+        }
     }
 
     return (
@@ -42,6 +54,9 @@ const LoginScreen = ({ navigation }) => {
                     autoFocus={true}
                     value={email}
                     onChangeText={text => setEmail(text)}
+                    leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+                    leftIconContainerStyle={{ marginRight: 10 }}
+                    errorMessage={emailError ? 'This field is required' : null}
                 />
                 <Input
                     placeholder={'Password'}
@@ -50,9 +65,17 @@ const LoginScreen = ({ navigation }) => {
                     value={password}
                     onChangeText={text => setPassword(text)}
                     onSubmitEditing={signIn}
+                    leftIcon={{ type: 'font-awesome', name: 'key' }}
+                    leftIconContainerStyle={{ marginRight: 10 }}
+                    errorMessage={passwordError ? 'This field is required' : null}
                 />
             </View>
-            <Button containerStyle={styles.button} title={'Login'} onPress={() => signIn()} />
+            <Button
+                containerStyle={styles.button}
+                title={'Login'}
+                onPress={() => signIn()}
+                loading={loading}
+            />
             <Button
                 containerStyle={styles.button}
                 type={'outline'}

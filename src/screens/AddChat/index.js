@@ -9,6 +9,7 @@ import { db } from '../../../firebase';
 const AddChat = ({ navigation }) => {
 
     const [input, setInput] = useState('');
+    const [loading, setLoading] = useState(false);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -17,11 +18,12 @@ const AddChat = ({ navigation }) => {
     }, [navigation])
 
     const createChat = async () => {
+        setLoading(true)
         await db.collection('chats').add({
             chatName: input
         }).then(() => {
             navigation.goBack()
-        }).catch((error) => alert(error.message))
+        }).catch((error) => alert(error.message)).finally(() => { setLoading(false) })
     }
 
     return (
@@ -36,7 +38,12 @@ const AddChat = ({ navigation }) => {
                         <Icon name={'wechat'} type={'antdesign'} color={'black'} size={20} />
                     }
                 />
-                <Button onPress={() => createChat()} title={'Add a new chat'} />
+                <Button
+                    disabled={!input}
+                    onPress={() => createChat()}
+                    title={'Add a new chat'}
+                    loading={loading}
+                />
             </View>
         </View>
     )
