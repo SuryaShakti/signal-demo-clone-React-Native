@@ -72,7 +72,12 @@ const HomeScreen = ({ navigation }) => {
             <ScrollView style={styles.container}>
                 {
                     chats.map((chat) => (
-                        <CustomListItem enterChat={enterChat} id={chat.id} key={chat.id} chatName={chat.data.chatName} />
+                        <CustomListItem
+                            enterChat={enterChat}
+                            id={chat.id}
+                            key={chat.id}
+                            chatName={chat.data.chatName}
+                        />
                     ))
                 }
             </ScrollView>
